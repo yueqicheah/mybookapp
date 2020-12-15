@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mybookapp/AdminAnswer.dart';
 import 'package:mybookapp/ChatPage.dart';
 import 'package:mybookapp/login.dart';
 
@@ -52,7 +53,16 @@ class _AdminChatState extends State<AdminChat> {
                         child: Padding(
                             padding: const EdgeInsets.all(3.0),
                             child: ListTile(
-                              leading: Icon(Icons.assignment_ind),
+                              leading: GestureDetector(
+                                child: Icon(Icons.assignment_ind),
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => AdminAnswers(
+                                        email: document.data()['email'],
+                                        id: document.data()['userId']),
+                                  ));
+                                },
+                              ),
                               title: Text(document.data()['email']),
                               trailing: GestureDetector(
                                 child: Icon(Icons.chat_bubble_outline),
@@ -62,7 +72,6 @@ class _AdminChatState extends State<AdminChat> {
                                         email: document.data()['email'],
                                         id: document.data()['userId']),
                                   ));
-                                  print(document.data()['userId']);
                                 },
                               ),
                             )),

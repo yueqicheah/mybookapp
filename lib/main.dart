@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
       home: LoginScreen(),
       duration: 3000,
       imageSize: 150,
-      imageSrc: "images/books.jpeg",
+      imageSrc: "images/books.png",
       text: "WELCOME MY BOOKS APP",
       textType: TextType.TyperAnimatedText,
       textStyle: TextStyle(

@@ -93,25 +93,27 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         ? Answers()
         : Scaffold(
             appBar: AppBar(
-                // actions: <Widget>[
-                //   FlatButton(
-                //     child: Text(
-                //       'Logout',
-                //       style: TextStyle(
-                //         fontSize: 18.0,
-                //         color: Colors.white,
-                //       ),
-                //     ),
-                //     onPressed: signOut,
-                //   ),
-                // ],
-                ),
+              automaticallyImplyLeading: false,
+              // actions: <Widget>[
+              //   FlatButton(
+              //     child: Text(
+              //       'Logout',
+              //       style: TextStyle(
+              //         fontSize: 18.0,
+              //         color: Colors.white,
+              //       ),
+              //     ),
+              //     onPressed: signOut,
+              //   ),
+              // ],
+            ),
             body: loading || loading1
                 ? Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: Center(child: CircularProgressIndicator()))
-                : Column(
+                : ListView(
+                    shrinkWrap: true,
                     children: [
                       SizedBox(
                         height: h / 7,
