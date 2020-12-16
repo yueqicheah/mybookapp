@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -62,14 +63,43 @@ class _AnswersState extends State<Answers> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Chat(),
-            ));
-          },
-          child: Icon(Icons.inbox),
-        ),
+        floatingActionButton: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('Users')
+                .doc(userId)
+                .collection('Chats')
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                    child: Center(child: CircularProgressIndicator()));
+              }
+              return snapshot.data.docs.length != 0
+                  ? FloatingActionButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Chat(),
+                        ));
+                      },
+                      child: Badge(
+                          alignment: Alignment.topRight,
+                          badgeContent: Text(
+                            snapshot.data.docs.length.toString(),
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          badgeColor: Colors.redAccent,
+                          child: Icon(Icons.inbox)),
+                    )
+                  : FloatingActionButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Chat(),
+                        ));
+                      },
+                      child: Icon(Icons.inbox),
+                    );
+            }),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: Text('My Answers'),

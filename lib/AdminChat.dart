@@ -52,29 +52,53 @@ class _AdminChatState extends State<AdminChat> {
                         elevation: 5,
                         child: Padding(
                             padding: const EdgeInsets.all(3.0),
-                            child: ListTile(
-                              leading: GestureDetector(
-                                child: Icon(Icons.assignment_ind),
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => AdminAnswers(
-                                        email: document.data()['email'],
-                                        id: document.data()['userId']),
-                                  ));
-                                },
-                              ),
-                              title: Text(document.data()['email']),
-                              trailing: GestureDetector(
-                                child: Icon(Icons.chat_bubble_outline),
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ChatPage(
-                                        email: document.data()['email'],
-                                        id: document.data()['userId']),
-                                  ));
-                                },
-                              ),
-                            )),
+                            child: StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .doc(document.data()['userId'])
+                                    .collection('Chats')
+                                    .orderBy('time', descending: false)
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot1) {
+                                  if (snapshot1.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Container(
+                                        child: Center(
+                                            child:
+                                                CircularProgressIndicator()));
+                                  }
+                                  return Ink(
+                                    color: snapshot1.data.docs.length == 0
+                                        ? Colors.grey[200]
+                                        : Colors.white,
+                                    child: ListTile(
+                                      leading: GestureDetector(
+                                        child: Icon(Icons.assignment_ind),
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => AdminAnswers(
+                                                email: document.data()['email'],
+                                                id: document.data()['userId']),
+                                          ));
+                                        },
+                                      ),
+                                      title: Text(document.data()['email']),
+                                      trailing: GestureDetector(
+                                        child: Icon(Icons.chat_bubble_outline),
+                                        onTap: () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => ChatPage(
+                                                email: document.data()['email'],
+                                                id: document.data()['userId']),
+                                          ));
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                })),
                       ),
                     ),
                   ),

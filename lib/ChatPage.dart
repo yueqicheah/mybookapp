@@ -238,10 +238,23 @@ class _ChatPageState extends State<ChatPage> {
                                       child: Image.network(
                                           document.data()['file']))
                                   : Container(),
-                              Text(
-                                document.data()['message'],
-                                textAlign: TextAlign.center,
-                              ),
+                              document.data()['message'] != ""
+                                  ? Text(
+                                      document.data()['message'],
+                                      textAlign: TextAlign.center,
+                                    )
+                                  : Column(
+                                      children: [
+                                        Text(
+                                          "Content: ",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          document.data()['content'],
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
                             ],
                           ),
                         ),

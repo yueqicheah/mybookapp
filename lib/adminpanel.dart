@@ -45,6 +45,7 @@ class _AdminPanelState extends State<AdminPanel> {
           children: <Widget>[
             Expanded(
               child: TextField(
+                controller: _textEditingController,
                 onChanged: (value) {
                   text = value;
                 },
